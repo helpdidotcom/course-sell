@@ -1,0 +1,47 @@
+{% extends './base.html' %}
+
+{% load static %}
+
+{% block title %} 
+{{ block.super }}::
+{{ course.name }}
+{% endblock title %}
+
+{% block css %} 
+<link rel="stylesheet" href="{% static 'courses/css/course_page.css' %}">
+{% endblock css %}
+
+{% block js %} 
+<script src="{% static 'courses/js/course_page.js' %}"></script>
+{% endblock js %}
+
+
+{% block content %}
+<div class="container">
+  <h3 class="mt-2">My Courses</h3>
+  <hr>
+  <div class="row mt-3">
+    {% for uc in user_courses %}
+    <div class="col-lg-4">
+      <div class="card text-left">
+        <img class="card-img-top" src="{{ uc.course.image.url }}" alt="">
+        <div class="card-body">
+          <h4 class="card-title">{{ uc.course.name }}</h4>
+        </div>
+      </div>
+      <div class="card-footer p-0 border-0">
+        <div class="row no-gutters">
+          <div class="col border">
+            <a href="{% url 'coursepage' uc.course.slug %}" class="btn btn-light btn-block">Start Course</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+
+  </div>
+
+</div>
+
+{% endblock content %}

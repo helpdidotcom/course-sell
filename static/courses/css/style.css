@@ -1,0 +1,9 @@
+.card img {
+    width: 100%;
+    height: 300px;
+    /* margin: auto; */
+}
+
+.price {
+    font-size: 20px;
+}

@@ -1,0 +1,64 @@
+{% extends './base.html' %}
+{% load static %}
+{% load course_custom_tag %}
+
+{% block title %} Home {% endblock title %}
+
+{% block content %}
+
+
+
+
+<div class="container-fluid">
+  <div class="row mt-3">
+
+    {% for course in courses %}
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-5">
+      <div class="card text-left">
+        <img class="card-img-top" src="{{ course.image.url }}" alt="">
+        <div class="card-body">
+          <h4 class="card-title">{{ course.name }}</h4>
+          <div class="card-text">
+            <p>Save {{ course.discount }}%
+              <br>
+              <span class="price">
+                <del>{{ course.price|rupee }}</del>
+                &nbsp;
+                {% apply_discount course.price course.discount as value %}
+                {{ value|rupee }}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+      {% is_enrolled request.user course as enrolled %}
+      {% if not enrolled %}
+      <div class="card-footer p-0 border-0">
+        <div class="row no-gutters">
+          <div class="col border">
+            <a href="{% url 'checkout' course.slug %}" class="btn btn-light btn-block">Enroll Now</a>
+          </div>
+          <div class="col border">
+            <a href="{% url 'coursepage' course.slug %}" class="btn btn-light btn-block">Show More</a>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="card-footer p-0 border-0">
+        <div class="row no-gutters">
+          <div class="col border">
+            <a href="{% url 'coursepage' course.slug %}" class="btn btn-light btn-block">Start Course</a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+
+  </div>
+
+</div>
+
+
+{% endblock content %}

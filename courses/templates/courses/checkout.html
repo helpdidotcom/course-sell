@@ -1,0 +1,86 @@
+{% extends './base.html' %}
+{% load course_custom_tag %}
+{% block title %}
+Login
+{% endblock title %}
+
+
+{% block content %}
+
+<style>
+.p-amount {
+    font-size: 20px;
+}
+
+</style>
+
+<div class="container">
+    
+    <br>
+
+    <div class="row">
+        <div class="col-4">
+            <div class="card text-left">
+                <img class="card-img-top" src="{{ course.image.url }}" alt="">
+                <div class="card-body">
+                    <h4 class="card-title">{{ course.name }}</h4>
+                    <div class="card-text">
+                        <p>Save {{ course.discount }}%
+                        <br>
+                        <span class="price">
+                            <del>{{ course.price|rupee }}</del>
+                            &nbsp;
+                            {% apply_discount course.price course.discount as value %}
+                            {{ value|rupee }}
+                        </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col offset-2">
+            <h2>{{ course.name }}</h2>
+            <p class="pt-3 p-amount">
+                Payable Amount: <b>{% apply_discount course.price course.discount %}</b>
+            </p>
+            <a class="btn btn-light border pt-20" href="?action=create_order">Continue to Payment</a>
+        </div>
+    </div>
+
+
+</div>
+{% if order %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "{{ KEY_ID }}",
+    "name": "AVI STORE",
+    "image": "{{ course.image.url }}",
+    "order_id": "{{ order.id }}",
+    "callback_url": "{% url 'verify_payment' %}",
+    "prefill": {
+        "name": "{{ request.user.first_name }} {{ request.user.last_name }}",
+        "email": "{{ request.user.email }}",
+        "contact": "8877805595"
+    },
+    "theme": {
+        "color": "#800000"
+    }
+};
+var rzp1 = new Razorpay(options);
+
+</script>
+{% endif %}
+
+
+<script>
+{% if error is not None %}
+alert('{{ error }}')
+{% else %}
+rzp1.open();
+
+{% endif %}
+</script>
+
+
+{% endblock content %}

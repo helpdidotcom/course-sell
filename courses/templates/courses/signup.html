@@ -1,0 +1,17 @@
+{% extends './base.html' %}
+
+{% block title %}
+Login
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <div class="display-1"> Signup </div>
+    <form action="{% url 'signup' %}" method="POST" novalidate>
+        {% csrf_token %}
+        {{ form.as_p}}
+        <input type="submit" value="Register">
+    </form>
+</div>
+{% endblock content %}

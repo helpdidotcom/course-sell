@@ -1,0 +1,15 @@
+#video-list {
+    overflow-y: scroll;
+}
+
+/* #video-list li a {
+    color: black;
+} */
+
+.active a {
+    color: white;
+}
+
+.active a:hover {
+    color: black;
+}
